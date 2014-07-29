@@ -1,0 +1,13 @@
+# Promesa con modal
+function openImportContact () {
+    return $modal.open({
+      templateUrl: 'partials/import_contact_modal.html',
+      controller: 'ImportContactModalController',
+      windowClass: 'import_contact_modal_window'
+    }).result.then(function (foundUserID) {
+      if (!foundUserID) {
+        return $q.reject();
+      }
+      return foundUserID;
+    });
+  };
