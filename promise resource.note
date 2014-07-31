@@ -1,0 +1,43 @@
+# Promise resource
+Update: Angular 1.2 and Promises
+
+As of Angular 1.2, resources support promises. But they didn't change the rest of the behavior.
+
+To leverage promises with $resource, you need to use the $promise property on the returned value.
+Example using promises
+
+var Todo = $resource('/api/1/todo/:id');
+
+Todo.get({id: 123}).$promise.then(function(todo) {
+   // success
+   $scope.todos = todos;
+}, function(errResponse) {
+   // fail
+});
+
+Todo.query().$promise.then(function(todos) {
+   // success
+   $scope.todos = todos;
+}, function(errResponse) {
+   // fail
+});
+
+Just keep in mind that the $promise property is a property on the same values it was returning above. So you can get weird:
+These are equivalent
+
+var todo = Todo.get({id: 123}, function() {
+   $scope.todo = todo;
+});
+
+Todo.get({id: 123}, function(todo) {
+   $scope.todo = todo;
+});
+
+Todo.get({id: 123}).$promise.then(function(todo) {
+   $scope.todo = todo;
+});
+
+var todo = Todo.get({id: 123});
+todo.$promise.then(function() {
+   $scope.todo = todo;
+});
