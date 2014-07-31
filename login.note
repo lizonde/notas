@@ -1,0 +1,48 @@
+# Login
+var app = angular.module('plunker', ['ngRoute']);
+
+app.config(function($routeProvider) {
+  $routeProvider.when('/login', {
+    templateUrl: 'login.html',
+    controller: 'LoginCtrl'
+  });
+  $routeProvider.when('/', {
+    templateUrl: 'home.html',
+    controller: 'HomeCtrl'
+  });
+  $routeProvider.otherwise({ redirectTo: '/' });
+});
+app.run(function(authentication, $rootScope, $location) {
+  $rootScope.$on('$routeChangeStart', function(evt) {
+    if(!authentication.isAuthenticated){ 
+      $location.url("/login");
+    }
+    event.preventDefault();
+  });
+})
+
+app.controller('LoginCtrl', function($scope, $http, $location, authentication) {
+  $scope.login = function() {
+    if ($scope.username === 'admin' && $scope.password === 'pass') {
+      console.log('successful')
+      authentication.isAuthenticated = true;
+      authentication.user = { name: $scope.username };
+      $location.url("/");
+    } else {
+      $scope.loginError = "Invalid username/password combination";
+      console.log('Login failed..');
+    };
+  };
+});
+
+app.controller('HomeCtrl', function($scope, authentication) {
+  $scope.user = authentication.user.name;
+  
+});
+
+app.factory('authentication', function() {
+  return {
+    isAuthenticated: false,
+    user: null
+  }
+});
