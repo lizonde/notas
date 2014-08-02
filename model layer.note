@@ -1,0 +1,26 @@
+# Model layer
+app.service('MyService', function ($http, $q, $angularCacheFactory) {
+    var _dataCache = $angularCacheFactory('dataCache', { 
+        maxAge: 3600000 // items expire after an hour
+    });
+    /**
+     * @class MyService
+     */
+    return {
+        manipulateData: function (input) {
+            var output;
+            // do something with the data
+            return output;
+        },
+            
+        getDataById: function (id) {
+            var deferred = $q.defer();
+            if (_dataCache.get(id)) {
+                deferred.resolve(_dataCache.get(id));
+            } else {
+                // Get the data from the server and populate cache
+            }
+            return deferred.promise;
+        }
+    };
+});

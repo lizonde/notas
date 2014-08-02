@@ -1,0 +1,17 @@
+# Lazy load angular
+var app = angular.module('app', []);
+
+app.config(function ($controllerProvider, $compileProvider, $filterProvider, $provide, $animationProvider) {
+    
+    // save references to the providers
+    app.lazy = {
+        controller: $controllerProvider.register,
+        directive: $compileProvider.directive,
+        filter: $filterProvider.register,
+        factory: $provide.factory,
+        service: $provide.service,
+        animation: $animationProvider.register
+    };
+    
+    // define routes, etc.
+});

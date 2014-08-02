@@ -1,0 +1,15 @@
+# $q resole
+function sum (a, b) {
+      return a + b;
+ }
+
+$q.when(sum(1, 2)).then(function(resolved) {
+      return $anotherPromiseFunction(resolved);
+})).then(function(resolved) {
+      alert(resolved);
+}));
+
+//or shortly
+$q.when(sum(1, 2)).then($anotherPromiseFunction).then(function(resolved) {
+      alert(resolved);
+}));
